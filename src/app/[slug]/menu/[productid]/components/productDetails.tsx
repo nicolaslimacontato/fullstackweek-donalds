@@ -18,7 +18,7 @@ interface ProductDetailsProps {
       restaurant: {
         select: {
           name: true;
-          avatarImageUrl: true;
+          avatarImgUrl: true;
         };
       };
     };
@@ -53,7 +53,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           {/* RESTAURANTE */}
           <div className="flex items-center gap-1.5">
             <Image
-              src={product.restaurant.avatarImageUrl}
+              src={product.restaurant.avatarImgUrl}
               alt={product.restaurant.name}
               width={16}
               height={16}

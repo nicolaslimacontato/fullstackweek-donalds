@@ -10,13 +10,13 @@ body {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 20%;
-    --card: 0 0% 100%;
+    --card: hsl(0 0% 100%);
     --card-foreground: 0 0% 20%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 20%;
     --primary: 42 100% 50%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 89%;
+    --secondary: 0 0% 90%;
     --secondary-foreground: 0 0% 20%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
@@ -41,8 +41,9 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground h-full;
+    @apply h-full bg-background text-foreground;
   }
+
   html {
     @apply h-full;
   }
