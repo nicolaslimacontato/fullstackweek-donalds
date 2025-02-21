@@ -1,25 +1,33 @@
 "use client";
 
 import { Prisma } from "@prisma/client";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ChefHatIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import { useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/helpers/format-currency";
 
+import CartSheet from "../../components/cart-sheet";
 import { CartContext } from "../../contexts/cart";
 
 interface ProductDetailsProps {
   product: Prisma.ProductGetPayload<{
-    include: { restaurant: { select: { name: true; avatarImgUrl: true } } };
+    include: {
+      restaurant: {
+        select: {
+          name: true;
+          avatarImageUrl: true;
+        };
+      };
+    };
   }>;
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
-  const { isOpen, toggleCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1);
+  const { toggleCart, addProduct } = useContext(CartContext);
+  const [quantity, setQuantity] = useState<number>(1);
   const handleDecreaseQuantity = () => {
     setQuantity((prev) => {
       if (prev === 1) {
@@ -32,19 +40,23 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
     setQuantity((prev) => prev + 1);
   };
   const handleAddToCart = () => {
+    addProduct({
+      ...product,
+      quantity,
+    });
     toggleCart();
   };
   return (
     <>
       <div className="relative z-50 mt-[-1.5rem] flex flex-auto flex-col overflow-hidden rounded-t-3xl p-5">
         <div className="flex-auto overflow-hidden">
-          {/* {Restarurante} */}
+          {/* RESTAURANTE */}
           <div className="flex items-center gap-1.5">
             <Image
-              src={product.restaurant.avatarImgUrl}
+              src={product.restaurant.avatarImageUrl}
               alt={product.restaurant.name}
-              height={16}
               width={16}
+              height={16}
               className="rounded-full"
             />
             <p className="text-xs text-muted-foreground">
@@ -52,11 +64,11 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
             </p>
           </div>
 
-          {/* Nome do produto */}
+          {/* NOME DO PRODUTO */}
           <h2 className="mt-1 text-xl font-semibold">{product.name}</h2>
 
-          {/* preco e quantidade */}
-          <div className="flex items-center justify-between mt-3">
+          {/* PREÇO E QUANTIDADE */}
+          <div className="mt-3 flex items-center justify-between">
             <h3 className="text-xl font-semibold">
               {formatCurrency(product.price)}
             </h3>
@@ -107,6 +119,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           Adicionar à sacola
         </Button>
       </div>
+      <CartSheet />
     </>
   );
 };
