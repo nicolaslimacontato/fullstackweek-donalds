@@ -4,10 +4,12 @@ import { Prisma } from "@prisma/client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ChefHatIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/helpers/format-currency";
+
+import { CartContext } from "../../contexts/cart";
 
 interface ProductDetailsProps {
   product: Prisma.ProductGetPayload<{
@@ -16,6 +18,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
+  const { isOpen, toggleCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
   const handleDecreaseQuantity = () => {
     setQuantity((prev) => {
@@ -27,6 +30,9 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
   };
   const handleIncreaseQuantity = () => {
     setQuantity((prev) => prev + 1);
+  };
+  const handleAddToCart = () => {
+    toggleCart();
   };
   return (
     <>
@@ -50,7 +56,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           <h2 className="mt-1 text-xl font-semibold">{product.name}</h2>
 
           {/* preco e quantidade */}
-          <div className="flex items-center justify-between mt-5">
+          <div className="flex items-center justify-between mt-3">
             <h3 className="text-xl font-semibold">
               {formatCurrency(product.price)}
             </h3>
@@ -97,7 +103,9 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           </ScrollArea>
         </div>
 
-        <Button className="w-full rounded-full">Adicionar à sacola</Button>
+        <Button className="w-full rounded-full" onClick={handleAddToCart}>
+          Adicionar à sacola
+        </Button>
       </div>
     </>
   );
