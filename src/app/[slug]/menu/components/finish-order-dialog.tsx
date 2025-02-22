@@ -61,7 +61,7 @@ const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
   const { slug } = useParams<{ slug: string }>();
   const { products } = useContext(CartContext);
   const searchParams = useSearchParams();
-  const [isPedding, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -140,13 +140,13 @@ const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
                   type="submit"
                   variant="destructive"
                   className="rounded-full"
-                  disabled={isPedding}
+                  disabled={isPending}
                 >
-                  {isPedding && <Loader2Icon className="animate-spin" />}
+                  {isPending && <Loader2Icon className="animate-spin" />}
                   Finalizar
                 </Button>
                 <DrawerClose asChild>
-                  <Button className="w-full rounded-full" variant="secondary">
+                  <Button className="w-full rounded-full" variant="outline">
                     Cancelar
                   </Button>
                 </DrawerClose>
